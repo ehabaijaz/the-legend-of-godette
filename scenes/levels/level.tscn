@@ -17,6 +17,9 @@ tonemap_mode = 2
 [sub_resource type="BoxShape3D" id="BoxShape3D_377w7"]
 size = Vector3(40, 0.5, 40)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_yf5fn"]
+size = Vector3(10, 10, 1)
+
 [node name="Level" type="Node3D" unique_id=508047188]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1536823208]
@@ -40,3 +43,12 @@ size = Vector3(40, 0.5, 40)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/StaticBody3D" unique_id=495135946]
 shape = SubResource("BoxShape3D_377w7")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="Environment" unique_id=1272460490]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7508607, 1.6422195, -5.833511)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Environment/StaticBody3D2" unique_id=1723791783]
+size = Vector3(10, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/StaticBody3D2" unique_id=224790997]
+shape = SubResource("BoxShape3D_yf5fn")
