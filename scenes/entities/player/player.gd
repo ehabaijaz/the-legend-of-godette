@@ -7,7 +7,13 @@ extends CharacterBody3D
 @onready var jump_velocity : float = ((2.0 * jump_height) /jump_time_to_peak) * -1.0
 @onready var jump_gravity : float = ((-2.0 * jump_height) /(jump_time_to_peak * jump_time_to_peak)) * -1.0
 @onready var fall_gravity : float = ((-2.0 * jump_height) /(jump_time_to_descent * jump_time_to_descent)) * -1.0
-
+var defend := false:
+	set(value):
+		if not defend and value:
+			skin.defend(true)
+		if defend and not value:
+			skin.defend(false)
+		defend = value
 @onready var skin = $GodetteSkin
 
 @export var base_speed := 4.0
@@ -54,3 +60,5 @@ func jump_logic(delta)->void:
 func ability_logic()-> void:
 	if Input.is_action_just_pressed('ability'):
 		skin.attack()
+	defend = Input.is_action_pressed('block')
+	
