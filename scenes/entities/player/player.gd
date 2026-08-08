@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 # jump section
+@export var defend_speed := 2.0 
 @export var jump_height : float = 2.25
 @export var jump_time_to_peak : float = 0.4
 @export var jump_time_to_descent : float = 0.3
@@ -34,6 +35,7 @@ func move_logic(delta) -> void:
 	var is_running : bool = Input.is_action_pressed('run')
 	if movement_input != Vector2.ZERO: 
 		var speed = run_speed if is_running else base_speed
+		speed = defend_speed if defend else speed
 		vel2d += movement_input * speed * delta
 		vel2d = vel2d.limit_length(speed)
 		velocity.x = vel2d.x
