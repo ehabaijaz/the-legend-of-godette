@@ -15,6 +15,8 @@ var defend := false:
 		if defend and not value:
 			skin.defend(false)
 		defend = value
+var speed_modifier := 1.0
+var weapon_active := false
 @onready var skin = $GodetteSkin
 
 @export var base_speed := 4.0
@@ -26,7 +28,8 @@ func _physics_process(delta: float) -> void:
 	move_logic(delta)
 	jump_logic(delta)
 	ability_logic()
-	
+	if Input.is_action_just_pressed('ui_accept'):
+		hit()
 	move_and_slide( )
  
 func move_logic(delta) -> void:
@@ -37,8 +40,8 @@ func move_logic(delta) -> void:
 		var speed = run_speed if is_running else base_speed
 		speed = defend_speed if defend else speed
 		vel2d += movement_input * speed * delta
-		vel2d = vel2d.limit_length(speed)
-		velocity.x = vel2d.x
+		vel2d = vel2d.limit_length(speed) * speed_modifier
+		velocity.x = vel2d.x 
 		velocity.z = vel2d.y
 		skin.set_move_state("Running")
 		var target_angle = -movement_input.angle() + PI/2
@@ -60,7 +63,26 @@ func jump_logic(delta)->void:
 	velocity.y -= gravity * delta
 	
 func ability_logic()-> void:
+	 #attack
 	if Input.is_action_just_pressed('ability'):
-		skin.attack()
+		if weapon_active:
+			skin.attack()
+		else:
+			skin.cast_spell()
+			stop_movement(0.3,0.8)
+	#defend
 	defend = Input.is_action_pressed('block')
+	#magic
+	if Input.is_action_just_pressed('switch weapon') and not skin.attacking:
+		weapon_active = not weapon_active
+		skin.switch_weapon(weapon_active)
 	
+
+func stop_movement(start_duration : float, end_duration : float):
+	var tween=create_tween()
+	tween.tween_property(self,'speed_modifier',0.0, start_duration)
+	tween.tween_property(self,'speed_modifier',1.0, end_duration)
+	
+func hit():
+	skin.hit()
+	stop_movement(0.3,0.3)
