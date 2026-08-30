@@ -9,6 +9,7 @@
 
 # What is this?
 - A prototype for an open world 3d game in which the player has been developed and a small demo room to play with different features.
+- No AI used
 
 # Controls
 - WASD for movement
